@@ -1,0 +1,84 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Overzicht van de drie kleurtypen voor contactvoorkeuren in het Mijn Burgerprofiel." />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      @import "tailwindcss";
+
+      @keyframes gradientShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animated-bg {
+        background: linear-gradient(
+          135deg,
+          #0d1b2a,
+          #1a3a5c,
+          #0f2744,
+          #162d4e,
+          #0d1b2a
+        );
+        background-size: 400% 400%;
+        animation: gradientShift 18s ease infinite;
+      }
+
+      .fade-in-up {
+        opacity: 0;
+        animation: fadeInUp 0.7s ease forwards;
+      }
+
+      .fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+      .fade-in-up:nth-child(2) { animation-delay: 0.2s; }
+      .fade-in-up:nth-child(3) { animation-delay: 0.35s; }
+      .fade-in-up:nth-child(4) { animation-delay: 0.5s; }
+      .fade-in-up:nth-child(5) { animation-delay: 0.65s; }
+
+      .card-oranje {
+        border-top: 4px solid #f97316;
+        box-shadow: 0 0 0 1px rgba(249,115,22,0.15), 0 4px 32px rgba(0,0,0,0.35);
+      }
+      .card-paars {
+        border-top: 4px solid #a855f7;
+        box-shadow: 0 0 0 1px rgba(168,85,247,0.15), 0 4px 32px rgba(0,0,0,0.35);
+      }
+      .card-geel {
+        border-top: 4px solid #eab308;
+        box-shadow: 0 0 0 1px rgba(234,179,8,0.15), 0 4px 32px rgba(0,0,0,0.35);
+      }
+
+      .badge-oranje { background-color: rgba(249,115,22,0.15); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
+      .badge-paars  { background-color: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+      .badge-geel   { background-color: rgba(234,179,8,0.15);  color: #facc15; border: 1px solid rgba(234,179,8,0.3); }
+
+      .dl-row dt { color: rgba(255,255,255,0.5); }
+      .dl-row dd { color: rgba(255,255,255,0.9); }
+    </style>
+  </head>
+  <body class="animated-bg min-h-screen text-white font-sans antialiased">
+    <slot />
+  </body>
+</html>
