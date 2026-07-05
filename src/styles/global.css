@@ -4,8 +4,8 @@
    Design tokens (light mode defaults)
    ============================================ */
 :root {
-    --font-heading: 'DM Serif Display', Georgia, 'Times New Roman', serif;
-    --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-heading: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-body: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --bg-start: #f4f4f6;
     --bg-mid: #eaeaef;
     --bg-end: #f4f4f6;
@@ -183,8 +183,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--font-heading);
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: -0.02em;
 }
 

@@ -50,12 +50,12 @@ const colorMap: Record<string, { swatch: string; text: string }> = {
     <thead class="sticky z-20" style="top:3.5rem;">
       <tr>
         <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
-            style="background:var(--surface-solid); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
+            style="background:var(--surface-solid); color:var(--text-dim); border-bottom:1px solid var(--table-border); font-family:var(--font-heading);">
           Kleur
         </th>
         {columns.map((col) => (
           <th class={`p-4 sm:p-5 text-center ${col.headerClass}`}
-              style="border-bottom:1px solid var(--table-border);">
+              style="border-bottom:1px solid var(--table-border); font-family:var(--font-heading);">
             <span class="text-xs font-bold uppercase tracking-wider">{col.label}</span>
           </th>
         ))}
