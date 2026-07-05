@@ -1,135 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
 
-// ── Column definitions (header data per color) ──
+// ── Column definitions ──
 const columns = [
-  {
-    key: 'oranje' as const,
-    label: 'Oranje',
-    subtitle: 'Vlaamse dienstverleningen (IPDC)',
-    headerClass: 'table-header-oranje',
-    cellClass: 'table-cell-oranje',
-  },
-  {
-    key: 'paars' as const,
-    label: 'Paars',
-    subtitle: 'Dienstencheques (DHC)',
-    headerClass: 'table-header-paars',
-    cellClass: 'table-cell-paars',
-  },
-  {
-    key: 'geel' as const,
-    label: 'Geel',
-    subtitle: 'eBox',
-    headerClass: 'table-header-geel',
-    cellClass: 'table-cell-geel',
-  },
-] as const;
-
-type ColorKey = (typeof columns)[number]['key'];
-
-// ── Row definitions (shared across columns) ──
-interface TableRow {
-  label: string;
-  group: string;
-  values: Record<ColorKey, string | null>;
-}
-
-const rows: TableRow[] = [
-  {
-    label: 'Bron',
-    group: 'Algemeen',
-    values: {
-      oranje: 'Diensten uit de IPDC-productenlijst, opgehaald via notificaties',
-      paars: 'Contract met een externe partner',
-      geel: 'Samenwerking met een externe partner',
-    },
-  },
-  {
-    label: 'Voorbeeld',
-    group: '',
-    values: {
-      oranje: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)',
-      paars: 'Vandaag enkel Dienstencheques (DHC)',
-      geel: 'Vandaag enkel eBox',
-    },
-  },
-  {
-    label: 'Juridisch kader',
-    group: 'Algemeen',
-    values: {
-      oranje: 'Valt onder het eGov-decreet',
-      paars: 'Verwerkersovereenkomst met de partner',
-      geel: 'Gedeelde verwerkingsverantwoordelijkheid — MBP en partner delen de verantwoordelijkheid',
-    },
-  },
-  {
-    label: 'Rol MBP',
-    group: 'Algemeen',
-    values: {
-      oranje: 'Verwerkingsverantwoordelijke — MBP beheert de gegevens zelf',
-      paars: 'Enkel verwerker — MBP verwerkt gegevens namens de partner',
-      geel: 'Volgt de regels die de partner oplegt',
-    },
-  },
-  {
-    label: 'Consent',
-    group: 'Communicatie & Consent',
-    values: {
-      oranje: 'Burger geeft actief toestemming per dienstverlening',
-      paars: 'Toestemming voor communicatie is verplicht',
-      geel: 'Toestemming voor communicatie is verplicht; contactgegeven verplicht opgeslagen door gebruik van de dienst',
-    },
-  },
-  {
-    label: 'E-mailadres',
-    group: 'Communicatie & Consent',
-    values: {
-      oranje: 'Centraal opgeslagen in de Profielservice',
-      paars: 'Verplicht bij activatie van de dienst',
-      geel: 'Verplicht bij activatie',
-    },
-  },
-  {
-    label: 'E-mail verplicht?',
-    group: 'Communicatie & Consent',
-    values: {
-      oranje: 'Nee, maar kan als communicatiekanaal gevraagd worden',
-      paars: null,
-      geel: null,
-    },
-  },
+  { key: 'oranje', label: 'Oranje', headerClass: 'table-header-oranje', cellClass: 'table-cell-oranje' },
+  { key: 'paars',  label: 'Paars',  headerClass: 'table-header-paars',  cellClass: 'table-cell-paars'  },
+  { key: 'geel',   label: 'Geel',   headerClass: 'table-header-geel',   cellClass: 'table-cell-geel'   },
 ];
 
-// ── Group rows, inserting group-header sentinels ──
-const groups = ['', 'Algemeen', 'Communicatie & Consent'];
-const groupedRows: (TableRow | { isGroupHeader: true; label: string })[] = [];
+// ── Row data ──
+const rows = [
+  { label: 'Bron',    group: '',       values: { oranje: 'Diensten uit de IPDC-productenlijst, opgehaald via notificaties', paars: 'Contract met een externe partner', geel: 'Samenwerking met een externe partner' } },
+  { label: 'Voorbeeld', group: '',     values: { oranje: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)', paars: 'Vandaag enkel Dienstencheques (DHC)', geel: 'Vandaag enkel eBox' } },
+  { label: 'Juridisch kader', group: 'Algemeen', values: { oranje: 'Valt onder het eGov-decreet', paars: 'Verwerkersovereenkomst met de partner', geel: 'Gedeelde verwerkingsverantwoordelijkheid — MBP en partner delen de verantwoordelijkheid' } },
+  { label: 'Rol MBP', group: 'Algemeen', values: { oranje: 'Verwerkingsverantwoordelijke — MBP beheert de gegevens zelf', paars: 'Enkel verwerker — MBP verwerkt gegevens namens de partner', geel: 'Volgt de regels die de partner oplegt' } },
+  { label: 'Consent', group: 'Communicatie & Consent', values: { oranje: 'Burger geeft actief toestemming per dienstverlening', paars: 'Toestemming voor communicatie is verplicht', geel: 'Toestemming voor communicatie is verplicht; contactgegeven verplicht opgeslagen door gebruik van de dienst' } },
+  { label: 'E-mailadres', group: 'Communicatie & Consent', values: { oranje: 'Centraal opgeslagen in de Profielservice', paars: 'Verplicht bij activatie van de dienst', geel: 'Verplicht bij activatie' } },
+  { label: 'E-mail verplicht?', group: 'Communicatie & Consent', values: { oranje: 'Nee, maar kan als communicatiekanaal gevraagd worden', paars: null, geel: null } },
+];
 
-for (const group of groups) {
-  const groupRows = rows.filter((r) => r.group === group);
-  if (groupRows.length === 0) continue;
-  if (group) {
-    groupedRows.push({ isGroupHeader: true, label: group });
-  }
-  groupedRows.push(...groupRows);
-}
+const groups = ['', 'Algemeen', 'Communicatie & Consent'];
 
 // ── Sources ──
 const sources = [
-  {
-    label: 'FA Contactvoorkeuren 2026',
-    href: 'https://vlaamseoverheid.atlassian.net/wiki/spaces/CON/pages/7951188009/FA+Contactvoorkeuren+2026',
-  },
-  {
-    label: 'Contactvoorkeuren in MBP app',
-    href: 'https://vlaamseoverheid.atlassian.net/wiki/spaces/MBPAPP/pages/7912652902/Contactvoorkeuren+in+MBP+app',
-  },
+  { label: 'FA Contactvoorkeuren 2026', href: 'https://vlaamseoverheid.atlassian.net/wiki/spaces/CON/pages/7951188009/FA+Contactvoorkeuren+2026' },
+  { label: 'Contactvoorkeuren in MBP app', href: 'https://vlaamseoverheid.atlassian.net/wiki/spaces/MBPAPP/pages/7912652902/Contactvoorkeuren+in+MBP+app' },
 ];
-
-// ── Render helpers ──
-function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } {
-  return row.isGroupHeader === true;
-}
 ---
 
 <Layout title="Contactvoorkeuren kleuren">
@@ -146,67 +43,7 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
       </p>
     </div>
 
-    <!-- ── Comparison table ── -->
-    <div class="fade-in-up table-scroll rounded-xl border"
-         style="background:var(--surface-solid); border-color:var(--surface-border); box-shadow:var(--shadow-md); overflow:clip;">
-      <table class="w-full min-w-[640px] text-sm border-collapse">
-        <!-- Column headers -->
-        <thead class="sticky z-20" style="top:3.5rem;">
-          <tr>
-            <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
-                style="background:var(--surface-solid); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
-              Kleur
-            </th>
-            {columns.map((col) => (
-              <th class={`p-4 sm:p-5 text-center ${col.headerClass}`}
-                  style="border-bottom:1px solid var(--table-border);">
-                <div class="flex flex-col items-center gap-1">
-                  <span class="text-xs font-bold uppercase tracking-wider">{col.label}</span>
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-
-        <!-- Table body -->
-        <tbody>
-          {groupedRows.map((row) => {
-            if (isGroupHeader(row)) {
-              return (
-                <tr>
-                  <td colspan={columns.length + 1}
-                      class="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider"
-                      style="color:var(--text-dim); border-bottom:1px solid var(--table-border);">
-                    {row.label}
-                  </td>
-                </tr>
-              );
-            }
-
-            const tableRow = row as TableRow;
-            return (
-              <tr style="border-bottom:1px solid var(--table-border);">
-                <td class="sticky left-0 z-10 p-3 sm:p-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
-                    style="background:var(--surface-solid); color:var(--text-dim);">
-                  {tableRow.label}
-                </td>
-                {columns.map((col) => {
-                  const val = tableRow.values[col.key];
-                  return (
-                    <td class={`p-3 sm:p-4 leading-relaxed align-top text-center text-xs sm:text-sm ${col.cellClass}`}
-                        style="color:var(--text-body);">
-                      {val ?? (
-                        <span style="color:var(--text-dim);" aria-label="Niet van toepassing">—</span>
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <ComparisonTable {columns} {rows} {groups} />
 
     <!-- Sources -->
     <footer class="mt-8 sm:mt-10 fade-in-up">
