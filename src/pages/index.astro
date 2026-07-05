@@ -196,8 +196,7 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
 
             const tableRow = row as TableRow;
             return (
-              <tr class="transition-colors duration-150 hover:brightness-95 dark:hover:brightness-125"
-                  style="border-bottom:1px solid var(--table-border);">
+              <tr style="border-bottom:1px solid var(--table-border);">
                 <td class="sticky left-0 z-10 p-3 sm:p-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
                     style="background:var(--surface); color:var(--text-dim);">
                   {tableRow.label}
