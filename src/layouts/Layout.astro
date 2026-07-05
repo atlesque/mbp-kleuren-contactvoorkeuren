@@ -15,11 +15,16 @@ const { title } = Astro.props;
     <meta name="description" content="Overzicht van de drie kleurtypen voor contactvoorkeuren in het Mijn Burgerprofiel." />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
     <style>
       @import "tailwindcss";
 
       /* ── Design tokens (light mode defaults) ── */
       :root {
+        --font-heading: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+        --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
         --bg-start: #f4f4f6;
         --bg-mid: #eaeaef;
         --bg-end: #f4f4f6;
@@ -152,6 +157,13 @@ const { title } = Astro.props;
         -webkit-overflow-scrolling: touch;
       }
 
+      /* ── Typography ── */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
+
       /* ── Source links ── */
       .source-link {
         color: var(--link-color);
@@ -171,7 +183,7 @@ const { title } = Astro.props;
       })();
     </script>
   </head>
-  <body class="min-h-screen font-sans antialiased transition-colors duration-300">
+  <body class="min-h-screen antialiased transition-colors duration-300" style="font-family:var(--font-body);">
     <!-- Top navigation -->
     <nav class="sticky top-0 z-50 border-b transition-colors duration-300"
          style="background:var(--nav-bg); border-color:var(--nav-border); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);">
