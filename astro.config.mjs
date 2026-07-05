@@ -3,6 +3,7 @@ import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
+  server: { port: 8510 },
   output: 'static',
   integrations: [
     icon({
