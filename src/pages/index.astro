@@ -46,6 +46,15 @@ const rows: TableRow[] = [
     },
   },
   {
+    label: 'Voorbeeld',
+    group: '',
+    values: {
+      oranje: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)',
+      paars: 'Vandaag enkel Dienstencheques (DHC)',
+      geel: 'Vandaag enkel eBox',
+    },
+  },
+  {
     label: 'Juridisch kader',
     group: 'Algemeen',
     values: {
@@ -90,19 +99,10 @@ const rows: TableRow[] = [
       geel: null,
     },
   },
-  {
-    label: 'Voorbeeld',
-    group: '',
-    values: {
-      oranje: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)',
-      paars: 'Vandaag enkel Dienstencheques (DHC)',
-      geel: 'Vandaag enkel eBox',
-    },
-  },
 ];
 
 // ── Group rows, inserting group-header sentinels ──
-const groups = ['Algemeen', 'Communicatie & Consent', ''];
+const groups = ['', 'Algemeen', 'Communicatie & Consent'];
 const groupedRows: (TableRow | { isGroupHeader: true; label: string })[] = [];
 
 for (const group of groups) {
@@ -135,23 +135,6 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
 <Layout title="Contactvoorkeuren kleuren">
   <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
 
-    <!-- Header -->
-    <header class="mb-8 sm:mb-10 fade-in-up">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium tracking-wider uppercase mb-4"
-           style="background:var(--pill-bg); color:var(--pill-text); border:1px solid var(--pill-border);">
-        Mijn Burgerprofiel
-      </div>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight"
-          style="color:var(--text-heading);">
-        Contactvoorkeuren<br class="hidden sm:block" />
-        <span style="color:var(--text-muted);"> kleuren</span>
-      </h1>
-      <p class="mt-4 text-base sm:text-lg max-w-2xl" style="color:var(--text-muted);">
-        Een overzicht van de drie kleurtypen voor contactvoorkeuren in het Mijn Burgerprofiel,
-        met hun juridisch kader, rol van MBP en consent-vereisten.
-      </p>
-    </header>
-
     <!-- ── Comparison table ── -->
     <div class="fade-in-up table-scroll rounded-xl border overflow-hidden"
          style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md);">
@@ -161,14 +144,13 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
           <tr>
             <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
                 style="background:var(--surface); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
-              Attribuut
+              Kleur
             </th>
             {columns.map((col) => (
               <th class={`p-4 sm:p-5 text-center ${col.headerClass}`}
                   style="border-bottom:1px solid var(--table-border);">
                 <div class="flex flex-col items-center gap-1">
                   <span class="text-xs font-bold uppercase tracking-wider">{col.label}</span>
-                  <span class="text-[0.7rem] leading-tight max-w-[140px]">{col.subtitle}</span>
                 </div>
               </th>
             ))}
