@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/* ============================================
+   Design tokens (light mode defaults)
+   ============================================ */
+:root {
+    --font-heading: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --bg-start: #f4f4f6;
+    --bg-mid: #eaeaef;
+    --bg-end: #f4f4f6;
+    --text-heading: #0d1117;
+    --text-body: #3a3d44;
+    --text-muted: #6b6e76;
+    --text-dim: #8f929a;
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-border: rgba(0, 0, 0, 0.08);
+    --surface-border-strong: rgba(0, 0, 0, 0.12);
+    --callout-bg: rgba(0, 0, 0, 0.03);
+    --callout-border: rgba(0, 0, 0, 0.08);
+    --nav-bg: rgba(255, 255, 255, 0.75);
+    --nav-border: rgba(0, 0, 0, 0.08);
+    --pill-bg: rgba(0, 0, 0, 0.04);
+    --pill-text: rgba(0, 0, 0, 0.5);
+    --pill-border: rgba(0, 0, 0, 0.08);
+    --table-stripe: rgba(0, 0, 0, 0.015);
+    --table-border: rgba(0, 0, 0, 0.08);
+    --link-color: #4a5568;
+    --link-hover: #0d1117;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   Dark mode overrides
+   ============================================ */
+.dark {
+    --bg-start: #0d1b2a;
+    --bg-mid: #1a3a5c;
+    --bg-end: #0d1b2a;
+    --text-heading: #ffffff;
+    --text-body: rgba(255, 255, 255, 0.9);
+    --text-muted: rgba(255, 255, 255, 0.55);
+    --text-dim: rgba(255, 255, 255, 0.4);
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --surface-border-strong: rgba(255, 255, 255, 0.12);
+    --callout-bg: rgba(255, 255, 255, 0.06);
+    --callout-border: rgba(255, 255, 255, 0.1);
+    --nav-bg: rgba(13, 27, 42, 0.8);
+    --nav-border: rgba(255, 255, 255, 0.08);
+    --pill-bg: rgba(255, 255, 255, 0.08);
+    --pill-text: rgba(255, 255, 255, 0.5);
+    --pill-border: rgba(255, 255, 255, 0.12);
+    --table-stripe: rgba(255, 255, 255, 0.02);
+    --table-border: rgba(255, 255, 255, 0.08);
+    --link-color: rgba(255, 255, 255, 0.45);
+    --link-hover: rgba(255, 255, 255, 0.85);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ============================================
+   Animated gradient background
+   ============================================ */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body {
+    background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end), var(--bg-mid), var(--bg-start));
+    background-size: 400% 400%;
+    animation: gradientShift 18s ease infinite;
+    color: var(--text-body);
+    transition: background 0.4s ease, color 0.3s ease;
+}
+
+/* ============================================
+   Fade-in animations
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.7s ease forwards;
+}
+
+.fade-in-up:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.fade-in-up:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.fade-in-up:nth-child(3) {
+    animation-delay: 0.35s;
+}
+
+.fade-in-up:nth-child(4) {
+    animation-delay: 0.5s;
+}
+
+.fade-in-up:nth-child(5) {
+    animation-delay: 0.65s;
+}
+
+/* ============================================
+   Shared table styles
+   ============================================ */
+.table-header-oranje {
+    background: #f97316;
+    color: #ffffff;
+}
+
+.table-header-paars {
+    background: #a855f7;
+    color: #ffffff;
+}
+
+.table-header-geel {
+    background: #eab308;
+    color: #1a1a2e;
+}
+
+.table-cell-oranje {
+    background: rgba(249, 115, 22, 0.06);
+}
+
+.table-cell-paars {
+    background: rgba(168, 85, 247, 0.06);
+}
+
+.table-cell-geel {
+    background: rgba(234, 179, 8, 0.06);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+/* ============================================
+   Source links
+   ============================================ */
+.source-link {
+    color: var(--link-color);
+}
+
+.source-link:hover {
+    color: var(--link-hover);
+}
