@@ -135,6 +135,19 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
 <Layout title="Contactvoorkeuren kleuren">
   <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
 
+    <!-- Key difference callout -->
+    <div class="mb-8 sm:mb-10 fade-in-up rounded-2xl p-6 sm:p-8"
+         style="background:var(--callout-bg); border:1px solid var(--callout-border); backdrop-filter:blur(12px);">
+      <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:var(--text-dim);">
+        Kernverschil in één zin
+      </p>
+      <p class="text-base sm:text-lg font-medium leading-relaxed" style="color:var(--text-body);">
+        Bij <span class="font-bold" style="color:#f97316;">oranje</span> is MBP de baas over de data,
+        bij <span class="font-bold" style="color:#a855f7;">paars</span> verwerkt MBP enkel voor een partner,
+        en bij <span class="font-bold" style="color:#ca8a04;">geel</span> delen MBP en de partner de verantwoordelijkheid.
+      </p>
+    </div>
+
     <!-- ── Comparison table ── -->
     <div class="fade-in-up table-scroll rounded-xl border"
          style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md); overflow:clip;">
@@ -195,19 +208,6 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
           })}
         </tbody>
       </table>
-    </div>
-
-    <!-- Key difference callout -->
-    <div class="mt-8 sm:mt-10 fade-in-up rounded-2xl p-6 sm:p-8"
-         style="background:var(--callout-bg); border:1px solid var(--callout-border); backdrop-filter:blur(12px);">
-      <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:var(--text-dim);">
-        Kernverschil in één zin
-      </p>
-      <p class="text-base sm:text-lg font-medium leading-relaxed" style="color:var(--text-body);">
-        Bij <span class="font-bold" style="color:#f97316;">oranje</span> is MBP de baas over de data,
-        bij <span class="font-bold" style="color:#a855f7;">paars</span> verwerkt MBP enkel voor een partner,
-        en bij <span class="font-bold" style="color:#ca8a04;">geel</span> delen MBP en de partner de verantwoordelijkheid.
-      </p>
     </div>
 
     <!-- Sources -->
