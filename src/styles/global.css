@@ -62,7 +62,13 @@
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
+html {
+    min-height: 100vh;
+    background-color: var(--bg-start);
+}
+
 body {
+    min-height: 100vh;
     background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end), var(--bg-mid), var(--bg-start));
     background-size: 400% 400%;
     color: var(--text-body);
