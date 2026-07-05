@@ -136,11 +136,11 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
   <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
 
     <!-- ── Comparison table ── -->
-    <div class="fade-in-up table-scroll rounded-xl border overflow-hidden"
-         style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md);">
+    <div class="fade-in-up table-scroll rounded-xl border"
+         style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md); overflow:clip;">
       <table class="w-full min-w-[640px] text-sm border-collapse">
         <!-- Column headers -->
-        <thead>
+        <thead class="sticky z-20" style="top:3.5rem;">
           <tr>
             <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
                 style="background:var(--surface); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
