@@ -5,7 +5,6 @@ import Layout from '../layouts/Layout.astro';
 const columns = [
   {
     key: 'oranje' as const,
-    emoji: '🟧',
     label: 'Oranje',
     subtitle: 'Vlaamse dienstverleningen (IPDC)',
     headerClass: 'table-header-oranje',
@@ -13,7 +12,6 @@ const columns = [
   },
   {
     key: 'paars' as const,
-    emoji: '🟪',
     label: 'Paars',
     subtitle: 'Dienstencheques (DHC)',
     headerClass: 'table-header-paars',
@@ -21,7 +19,6 @@ const columns = [
   },
   {
     key: 'geel' as const,
-    emoji: '🟨',
     label: 'Geel',
     subtitle: 'eBox',
     headerClass: 'table-header-geel',
@@ -170,9 +167,8 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
               <th class={`p-4 sm:p-5 text-center ${col.headerClass}`}
                   style="border-bottom:1px solid var(--table-border);">
                 <div class="flex flex-col items-center gap-1">
-                  <span class="text-2xl leading-none" aria-hidden="true">{col.emoji}</span>
-                  <span class="text-xs font-bold uppercase tracking-wider opacity-80">{col.label}</span>
-                  <span class="text-[0.7rem] leading-tight opacity-70 max-w-[140px]">{col.subtitle}</span>
+                  <span class="text-xs font-bold uppercase tracking-wider">{col.label}</span>
+                  <span class="text-[0.7rem] leading-tight max-w-[140px]">{col.subtitle}</span>
                 </div>
               </th>
             ))}
