@@ -14,6 +14,7 @@
     --text-muted: #6b6e76;
     --text-dim: #8f929a;
     --surface: rgba(255, 255, 255, 0.85);
+    --surface-solid: #f2f2f5;
     --surface-border: rgba(0, 0, 0, 0.08);
     --surface-border-strong: rgba(0, 0, 0, 0.12);
     --callout-bg: rgba(0, 0, 0, 0.03);
@@ -43,6 +44,7 @@
     --text-muted: rgba(255, 255, 255, 0.55);
     --text-dim: rgba(255, 255, 255, 0.4);
     --surface: rgba(255, 255, 255, 0.06);
+    --surface-solid: #111d2e;
     --surface-border: rgba(255, 255, 255, 0.08);
     --surface-border-strong: rgba(255, 255, 255, 0.12);
     --callout-bg: rgba(255, 255, 255, 0.06);
@@ -144,15 +146,27 @@ body {
 }
 
 .table-cell-oranje {
-    background: rgba(249, 115, 22, 0.06);
+    background: #fdf2ec;
 }
 
 .table-cell-paars {
-    background: rgba(168, 85, 247, 0.06);
+    background: #f6f0fd;
 }
 
 .table-cell-geel {
-    background: rgba(234, 179, 8, 0.06);
+    background: #fef9e3;
+}
+
+.dark .table-cell-oranje {
+    background: #1c1a18;
+}
+
+.dark .table-cell-paars {
+    background: #1a181f;
+}
+
+.dark .table-cell-geel {
+    background: #1c1b16;
 }
 
 .table-scroll {

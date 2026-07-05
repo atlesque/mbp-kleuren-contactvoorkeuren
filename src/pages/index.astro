@@ -154,13 +154,13 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
 
     <!-- ── Comparison table ── -->
     <div class="fade-in-up table-scroll rounded-xl border"
-         style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md); overflow:clip;">
+         style="background:var(--surface-solid); border-color:var(--surface-border); box-shadow:var(--shadow-md); overflow:clip;">
       <table class="w-full min-w-[640px] text-sm border-collapse">
         <!-- Column headers -->
         <thead class="sticky z-20" style="top:3.5rem;">
           <tr>
             <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
-                style="background:var(--surface); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
+                style="background:var(--surface-solid); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
               Kleur
             </th>
             {columns.map((col) => (
@@ -193,7 +193,7 @@ function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } 
             return (
               <tr style="border-bottom:1px solid var(--table-border);">
                 <td class="sticky left-0 z-10 p-3 sm:p-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
-                    style="background:var(--surface); color:var(--text-dim);">
+                    style="background:var(--surface-solid); color:var(--text-dim);">
                   {tableRow.label}
                 </td>
                 {columns.map((col) => {
