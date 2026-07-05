@@ -1,55 +1,123 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const colors = [
+// ── Column definitions (header data per color) ──
+const columns = [
   {
+    key: 'oranje' as const,
     emoji: '🟧',
     label: 'Oranje',
     subtitle: 'Vlaamse dienstverleningen (IPDC)',
-    cardClass: 'card-oranje',
-    badgeClass: 'badge-oranje',
-    fields: [
-      { term: 'Bron', def: 'Diensten uit de IPDC-productenlijst, opgehaald via notificaties' },
-      { term: 'Juridisch kader', def: 'Valt onder het eGov-decreet' },
-      { term: 'Rol MBP', def: 'Verwerkingsverantwoordelijke — MBP beheert de gegevens zelf' },
-      { term: 'Consent', def: 'Burger geeft actief toestemming per dienstverlening' },
-      { term: 'E-mailadres', def: 'Centraal opgeslagen in de Profielservice' },
-      { term: 'E-mail verplicht?', def: 'Nee, maar kan als communicatiekanaal gevraagd worden' },
-      { term: 'Voorbeeld', def: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)' },
-    ],
+    headerClass: 'table-header-oranje',
+    cellClass: 'table-cell-oranje',
   },
   {
+    key: 'paars' as const,
     emoji: '🟪',
     label: 'Paars',
     subtitle: 'Dienstencheques (DHC)',
-    cardClass: 'card-paars',
-    badgeClass: 'badge-paars',
-    fields: [
-      { term: 'Bron', def: 'Contract met een externe partner' },
-      { term: 'Juridisch kader', def: 'Verwerkersovereenkomst met de partner' },
-      { term: 'Rol MBP', def: 'Enkel verwerker — MBP verwerkt gegevens namens de partner' },
-      { term: 'Consent', def: 'Toestemming voor communicatie is verplicht' },
-      { term: 'E-mailadres', def: 'Verplicht bij activatie van de dienst' },
-      { term: 'Voorbeeld', def: 'Vandaag enkel Dienstencheques (DHC)' },
-    ],
+    headerClass: 'table-header-paars',
+    cellClass: 'table-cell-paars',
   },
   {
+    key: 'geel' as const,
     emoji: '🟨',
     label: 'Geel',
     subtitle: 'eBox',
-    cardClass: 'card-geel',
-    badgeClass: 'badge-geel',
-    fields: [
-      { term: 'Bron', def: 'Samenwerking met een externe partner' },
-      { term: 'Juridisch kader', def: 'Gedeelde verwerkingsverantwoordelijkheid — MBP en partner delen de verantwoordelijkheid' },
-      { term: 'Rol MBP', def: 'Volgt de regels die de partner oplegt' },
-      { term: 'Consent', def: 'Toestemming voor communicatie is verplicht; contactgegeven verplicht opgeslagen door gebruik van de dienst' },
-      { term: 'E-mailadres', def: 'Verplicht bij activatie' },
-      { term: 'Voorbeeld', def: 'Vandaag enkel eBox' },
-    ],
+    headerClass: 'table-header-geel',
+    cellClass: 'table-cell-geel',
+  },
+] as const;
+
+type ColorKey = (typeof columns)[number]['key'];
+
+// ── Row definitions (shared across columns) ──
+interface TableRow {
+  label: string;
+  group: string;
+  values: Record<ColorKey, string | null>;
+}
+
+const rows: TableRow[] = [
+  {
+    label: 'Bron',
+    group: 'Algemeen',
+    values: {
+      oranje: 'Diensten uit de IPDC-productenlijst, opgehaald via notificaties',
+      paars: 'Contract met een externe partner',
+      geel: 'Samenwerking met een externe partner',
+    },
+  },
+  {
+    label: 'Juridisch kader',
+    group: 'Algemeen',
+    values: {
+      oranje: 'Valt onder het eGov-decreet',
+      paars: 'Verwerkersovereenkomst met de partner',
+      geel: 'Gedeelde verwerkingsverantwoordelijkheid — MBP en partner delen de verantwoordelijkheid',
+    },
+  },
+  {
+    label: 'Rol MBP',
+    group: 'Algemeen',
+    values: {
+      oranje: 'Verwerkingsverantwoordelijke — MBP beheert de gegevens zelf',
+      paars: 'Enkel verwerker — MBP verwerkt gegevens namens de partner',
+      geel: 'Volgt de regels die de partner oplegt',
+    },
+  },
+  {
+    label: 'Consent',
+    group: 'Communicatie & Consent',
+    values: {
+      oranje: 'Burger geeft actief toestemming per dienstverlening',
+      paars: 'Toestemming voor communicatie is verplicht',
+      geel: 'Toestemming voor communicatie is verplicht; contactgegeven verplicht opgeslagen door gebruik van de dienst',
+    },
+  },
+  {
+    label: 'E-mailadres',
+    group: 'Communicatie & Consent',
+    values: {
+      oranje: 'Centraal opgeslagen in de Profielservice',
+      paars: 'Verplicht bij activatie van de dienst',
+      geel: 'Verplicht bij activatie',
+    },
+  },
+  {
+    label: 'E-mail verplicht?',
+    group: 'Communicatie & Consent',
+    values: {
+      oranje: 'Nee, maar kan als communicatiekanaal gevraagd worden',
+      paars: null,
+      geel: null,
+    },
+  },
+  {
+    label: 'Voorbeeld',
+    group: '',
+    values: {
+      oranje: 'Diverse Vlaamse overheidsdiensten (Jobbonus, afvalkalender, …)',
+      paars: 'Vandaag enkel Dienstencheques (DHC)',
+      geel: 'Vandaag enkel eBox',
+    },
   },
 ];
 
+// ── Group rows, inserting group-header sentinels ──
+const groups = ['Algemeen', 'Communicatie & Consent', ''];
+const groupedRows: (TableRow | { isGroupHeader: true; label: string })[] = [];
+
+for (const group of groups) {
+  const groupRows = rows.filter((r) => r.group === group);
+  if (groupRows.length === 0) continue;
+  if (group) {
+    groupedRows.push({ isGroupHeader: true, label: group });
+  }
+  groupedRows.push(...groupRows);
+}
+
+// ── Sources ──
 const sources = [
   {
     label: 'FA Contactvoorkeuren 2026',
@@ -60,74 +128,114 @@ const sources = [
     href: 'https://vlaamseoverheid.atlassian.net/wiki/spaces/MBPAPP/pages/7912652902/Contactvoorkeuren+in+MBP+app',
   },
 ];
+
+// ── Render helpers ──
+function isGroupHeader(row: any): row is { isGroupHeader: true; label: string } {
+  return row.isGroupHeader === true;
+}
 ---
 
 <Layout title="Contactvoorkeuren kleuren">
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
 
     <!-- Header -->
-    <header class="mb-12 sm:mb-16 fade-in-up">
+    <header class="mb-8 sm:mb-10 fade-in-up">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium tracking-wider uppercase mb-4"
-           style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.12)">
+           style="background:var(--pill-bg); color:var(--pill-text); border:1px solid var(--pill-border);">
         Mijn Burgerprofiel
       </div>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight"
+          style="color:var(--text-heading);">
         Contactvoorkeuren<br class="hidden sm:block" />
-        <span style="color:rgba(255,255,255,0.7)"> kleuren</span>
+        <span style="color:var(--text-muted);"> kleuren</span>
       </h1>
-      <p class="mt-4 text-base sm:text-lg max-w-2xl" style="color:rgba(255,255,255,0.55)">
+      <p class="mt-4 text-base sm:text-lg max-w-2xl" style="color:var(--text-muted);">
         Een overzicht van de drie kleurtypen voor contactvoorkeuren in het Mijn Burgerprofiel,
         met hun juridisch kader, rol van MBP en consent-vereisten.
       </p>
     </header>
 
-    <!-- Color cards -->
-    <div class="grid gap-6 sm:gap-8 lg:grid-cols-3">
-      {colors.map((color, i) => (
-        <article
-          class={`fade-in-up rounded-2xl p-6 sm:p-7 ${color.cardClass}`}
-          style="background:rgba(255,255,255,0.05); backdrop-filter:blur(12px);"
-        >
-          <!-- Card header -->
-          <div class="flex items-start gap-3 mb-5">
-            <span class="text-3xl leading-none mt-0.5" aria-hidden="true">{color.emoji}</span>
-            <div>
-              <span class={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1 ${color.badgeClass}`}>
-                {color.label}
-              </span>
-              <h2 class="text-lg font-semibold text-white leading-snug">{color.subtitle}</h2>
-            </div>
-          </div>
-
-          <!-- Definition list -->
-          <dl class="space-y-3">
-            {color.fields.map((field) => (
-              <div class="dl-row">
-                <dt class="text-xs font-medium uppercase tracking-wide mb-0.5">{field.term}</dt>
-                <dd class="text-sm leading-relaxed">{field.def}</dd>
-              </div>
+    <!-- ── Comparison table ── -->
+    <div class="fade-in-up table-scroll rounded-xl border overflow-hidden"
+         style="background:var(--surface); border-color:var(--surface-border); box-shadow:var(--shadow-md);">
+      <table class="w-full min-w-[640px] text-sm border-collapse">
+        <!-- Column headers -->
+        <thead>
+          <tr>
+            <th class="sticky left-0 z-10 w-40 sm:w-48 p-4 text-left text-xs font-semibold uppercase tracking-wider"
+                style="background:var(--surface); color:var(--text-dim); border-bottom:1px solid var(--table-border);">
+              Attribuut
+            </th>
+            {columns.map((col) => (
+              <th class={`p-4 sm:p-5 text-center ${col.headerClass}`}
+                  style="border-bottom:1px solid var(--table-border);">
+                <div class="flex flex-col items-center gap-1">
+                  <span class="text-2xl leading-none" aria-hidden="true">{col.emoji}</span>
+                  <span class="text-xs font-bold uppercase tracking-wider opacity-80">{col.label}</span>
+                  <span class="text-[0.7rem] leading-tight opacity-70 max-w-[140px]">{col.subtitle}</span>
+                </div>
+              </th>
             ))}
-          </dl>
-        </article>
-      ))}
+          </tr>
+        </thead>
+
+        <!-- Table body -->
+        <tbody>
+          {groupedRows.map((row) => {
+            if (isGroupHeader(row)) {
+              return (
+                <tr>
+                  <td colspan={columns.length + 1}
+                      class="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider"
+                      style="color:var(--text-dim); border-bottom:1px solid var(--table-border);">
+                    {row.label}
+                  </td>
+                </tr>
+              );
+            }
+
+            const tableRow = row as TableRow;
+            return (
+              <tr class="transition-colors duration-150 hover:brightness-95 dark:hover:brightness-125"
+                  style="border-bottom:1px solid var(--table-border);">
+                <td class="sticky left-0 z-10 p-3 sm:p-4 text-xs font-semibold uppercase tracking-wide whitespace-nowrap"
+                    style="background:var(--surface); color:var(--text-dim);">
+                  {tableRow.label}
+                </td>
+                {columns.map((col) => {
+                  const val = tableRow.values[col.key];
+                  return (
+                    <td class={`p-3 sm:p-4 leading-relaxed align-top text-center text-xs sm:text-sm ${col.cellClass}`}
+                        style="color:var(--text-body);">
+                      {val ?? (
+                        <span style="color:var(--text-dim);" aria-label="Niet van toepassing">—</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
 
     <!-- Key difference callout -->
-    <div class="mt-10 sm:mt-12 fade-in-up rounded-2xl p-6 sm:p-8"
-         style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); backdrop-filter:blur(12px);">
-      <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:rgba(255,255,255,0.4)">
+    <div class="mt-8 sm:mt-10 fade-in-up rounded-2xl p-6 sm:p-8"
+         style="background:var(--callout-bg); border:1px solid var(--callout-border); backdrop-filter:blur(12px);">
+      <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:var(--text-dim);">
         Kernverschil in één zin
       </p>
-      <p class="text-base sm:text-lg font-medium leading-relaxed" style="color:rgba(255,255,255,0.85)">
-        Bij <span class="font-bold text-orange-400">oranje</span> is MBP de baas over de data,
-        bij <span class="font-bold text-purple-400">paars</span> verwerkt MBP enkel voor een partner,
-        en bij <span class="font-bold text-yellow-400">geel</span> delen MBP en de partner de verantwoordelijkheid.
+      <p class="text-base sm:text-lg font-medium leading-relaxed" style="color:var(--text-body);">
+        Bij <span class="font-bold" style="color:#f97316;">oranje</span> is MBP de baas over de data,
+        bij <span class="font-bold" style="color:#a855f7;">paars</span> verwerkt MBP enkel voor een partner,
+        en bij <span class="font-bold" style="color:#ca8a04;">geel</span> delen MBP en de partner de verantwoordelijkheid.
       </p>
     </div>
 
     <!-- Sources -->
-    <footer class="mt-10 sm:mt-12 fade-in-up">
-      <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color:rgba(255,255,255,0.35)">
+    <footer class="mt-8 sm:mt-10 fade-in-up">
+      <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color:var(--text-dim);">
         Bronnen
       </p>
       <ul class="flex flex-col sm:flex-row gap-2 sm:gap-4 flex-wrap">
@@ -137,10 +245,7 @@ const sources = [
               href={src.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
-              style="color:rgba(255,255,255,0.45);"
-              onmouseover="this.style.color='rgba(255,255,255,0.85)'"
-              onmouseout="this.style.color='rgba(255,255,255,0.45)'"
+              class="source-link inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
